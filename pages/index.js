@@ -6,30 +6,38 @@ import Loader from '../components/Loader';
 import Pagination from '../components/Pagination';
 import styles from '../styles/Products.module.css';
 
-export default function Home({ products = [] }) {
+export default function Home() {
+  const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState(products);
-  const [isLoading, setIsLoading] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
 
   useEffect(() => {
-    setIsLoading(true);
-    
-    const searchTimer = setTimeout(() => {
-      if (searchText === '') {
-        setFilteredProducts(products);
-      } else {
-        const searchResults = products.filter(product =>
-          product.title.toLowerCase().includes(searchText.toLowerCase())
-        );
-        setFilteredProducts(searchResults);
-      }
-      setIsLoading(false);
-      setCurrentPage(1);
-    }, 400);
+    fetch('https://fakestoreapi.com/products')
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data);
+        setFilteredProducts(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        setIsLoading(false);
+      });
+  }, []);
 
-    return () => clearTimeout(searchTimer);
+  useEffect(() => {
+    if (searchText === '') {
+      setFilteredProducts(products);
+    } else {
+      const searchResults = products.filter(product =>
+        product.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredProducts(searchResults);
+    }
+    setCurrentPage(1);
   }, [searchText, products]);
 
   const lastProductIndex = currentPage * productsPerPage;
@@ -88,30 +96,4 @@ export default function Home({ products = [] }) {
       </div>
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  let products = [];
-  
-  try {
-    const response = await fetch('https://fakestoreapi.com/products', {
-      method: 'GET',
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-      },
-      timeout: 10000,
-    });
-
-    if (response.ok) {
-      products = await response.json();
-    }
-  } catch (error) {
-    console.error('Error fetching products:', error);
-  }
-
-  return {
-    props: {
-      products: products || []
-    }
-  };
 }

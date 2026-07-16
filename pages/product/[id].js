@@ -1,8 +1,55 @@
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../../styles/Products.module.css';
 
-export default function ProductDetail({ product }) {
+export default function ProductDetail() {
+  const router = useRouter();
+  const { id } = router.query;
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      fetch(`https://fakestoreapi.com/products/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          setProduct(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('Error:', err);
+          setLoading(false);
+        });
+    }
+  }, [id]);
+
+  const convertToINR = (usdPrice) => {
+    return Math.round(usdPrice * 83);
+  };
+
+  const getStars = (rating) => {
+    return '⭐'.repeat(Math.round(rating));
+  };
+
+  if (loading) {
+    return (
+      <div>
+        <div className="navbar">
+          <Link href="/" style={{ textDecoration: 'none', color: 'white' }}>
+            <h1>🛒 My Online Store</h1>
+          </Link>
+        </div>
+        <div className="main-content">
+          <div style={{textAlign: 'center', padding: '100px'}}>
+            <h3>Loading product...</h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!product) {
     return (
       <div>
@@ -20,16 +67,6 @@ export default function ProductDetail({ product }) {
       </div>
     );
   }
-
-  const convertToINR = (usdPrice) => {
-    const inrPrice = usdPrice * 83;
-    return Math.round(inrPrice);
-  };
-
-  const getStars = (rating) => {
-    const stars = Math.round(rating);
-    return '⭐'.repeat(stars);
-  };
 
   return (
     <div>
@@ -98,30 +135,4 @@ export default function ProductDetail({ product }) {
       </div>
     </div>
   );
-}
-
-export async function getServerSideProps({ params }) {
-  let product = null;
-
-  try {
-    const response = await fetch(`https://fakestoreapi.com/products/${params.id}`, {
-      method: 'GET',
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-      },
-      timeout: 10000,
-    });
-
-    if (response.ok) {
-      product = await response.json();
-    }
-  } catch (error) {
-    console.error('Error fetching product:', error);
-  }
-
-  return {
-    props: {
-      product: product
-    }
-  };
 }
