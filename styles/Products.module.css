@@ -1,0 +1,257 @@
+.searchBox {
+  background: #fff;
+  border: 3px solid #ff6b6b;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 30px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #ff6b6b;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: white;
+  border: 2px solid #ff6b6b;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
+}
+
+.image {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  height: 40px;
+  overflow: hidden;
+  color: #333;
+}
+
+.price {
+  font-size: 24px;
+  color: #ff6b6b;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.category {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.rating {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.stars {
+  color: orange;
+  margin-right: 5px;
+}
+
+.loader {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #ff6b6b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-size: 18px;
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.noProducts {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.paginationBtn {
+  padding: 10px 15px;
+  border: 2px solid #ff6b6b;
+  background: white;
+  color: #ff6b6b;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.paginationBtn:hover {
+  background: #ff6b6b;
+  color: white;
+}
+
+.paginationBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.activePage {
+  background: #ff6b6b !important;
+  color: white !important;
+}
+
+.detailContainer {
+  background: white;
+  border: 3px solid #ff6b6b;
+  border-radius: 15px;
+  padding: 40px;
+  margin: 20px 0;
+}
+
+.detailImage {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.detailTitle {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.detailPrice {
+  font-size: 36px;
+  color: #ff6b6b;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.detailCategory {
+  background: #ff6b6b;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  display: inline-block;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.description {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  border-left: 4px solid #ff6b6b;
+}
+
+.description h4 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.buyBtn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.buyBtn:hover {
+  background: #ff5252;
+}
+
+.backBtn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  background: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+  }
+}
