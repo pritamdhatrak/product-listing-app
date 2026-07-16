@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 import Pagination from '../components/Pagination';
 import styles from '../styles/Products.module.css';
 
-export default function Home({ products }) {
+export default function Home({ products = [] }) {
   const [searchText, setSearchText] = useState('');
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,21 +91,27 @@ export default function Home({ products }) {
 }
 
 export async function getServerSideProps() {
+  let products = [];
+  
   try {
-    const response = await fetch('https://fakestoreapi.com/products');
-    const products = await response.json();
+    const response = await fetch('https://fakestoreapi.com/products', {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+      },
+      timeout: 10000,
+    });
 
-    return {
-      props: {
-        products: products
-      }
-    };
+    if (response.ok) {
+      products = await response.json();
+    }
   } catch (error) {
-    console.log('Error fetching products:', error);
-    return {
-      props: {
-        products: []
-      }
-    };
+    console.error('Error fetching products:', error);
   }
+
+  return {
+    props: {
+      products: products || []
+    }
+  };
 }

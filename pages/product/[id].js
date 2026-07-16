@@ -5,11 +5,18 @@ import styles from '../../styles/Products.module.css';
 export default function ProductDetail({ product }) {
   if (!product) {
     return (
-      <div className="main-content">
-        <h2>Product not found!</h2>
-        <Link href="/">
-          <button className={styles.backBtn}>Go Back to Store</button>
-        </Link>
+      <div>
+        <div className="navbar">
+          <Link href="/" style={{ textDecoration: 'none', color: 'white' }}>
+            <h1>🛒 My Online Store</h1>
+          </Link>
+        </div>
+        <div className="main-content">
+          <h2>Product not found!</h2>
+          <Link href="/">
+            <button className={styles.backBtn}>Go Back to Store</button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -94,21 +101,27 @@ export default function ProductDetail({ product }) {
 }
 
 export async function getServerSideProps({ params }) {
-  try {
-    const response = await fetch(`https://fakestoreapi.com/products/${params.id}`);
-    const product = await response.json();
+  let product = null;
 
-    return {
-      props: {
-        product: product
-      }
-    };
+  try {
+    const response = await fetch(`https://fakestoreapi.com/products/${params.id}`, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+      },
+      timeout: 10000,
+    });
+
+    if (response.ok) {
+      product = await response.json();
+    }
   } catch (error) {
-    console.log('Error fetching product:', error);
-    return {
-      props: {
-        product: null
-      }
-    };
+    console.error('Error fetching product:', error);
   }
+
+  return {
+    props: {
+      product: product
+    }
+  };
 }
